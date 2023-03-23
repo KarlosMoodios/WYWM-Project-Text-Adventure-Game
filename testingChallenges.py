@@ -124,10 +124,5 @@
 #             nest[i][j] = "a"
 # print(nest)
 
-print('------------------------------------------')
-print('Welcome to Knights of the round table RPG!')
-print('------------------------------------------')
-print('     - To move, use the arrow keys -      ')
-print('  - Type the commands to exectute them -  ')
-print('    - Use \'Look\' to inspect something -   ')
-print('              - Good luck! -              ')
+print('''A grand staircase leads up to the top floor of the castle, the stairs look to be in great shape.
+The banister rails not so much. The knights' living quarters must be up there.''')
