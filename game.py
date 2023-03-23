@@ -1,4 +1,4 @@
-# Knights of the round table RPG
+# Reclaim Camelot Castle textRPG
 # Created by Karl Moody
 
 import cmd
@@ -14,18 +14,19 @@ screen_width = 100
 class player:
     def __init__(self):
         self.name = ''
+        self.gender = ''
         self.hp = 100
         self.mp = 100
-        self.sp = 100
-        self.gold = 50
-        self.inv = 20
+        self.inv = 10
         self.status_effects = []
-        self.loc = 'start'    
-Player1 = player()
+        self.loc = 'c0'
+        self.game_over = False
+player1 = player()
 
 # Title Screen
-def title_screen():
+def title_screen_selections():
     option = input('> ')
+    option = option.lower().strip()
     if option.lower() == ('play'):
         start_game() # Needs writing
     elif option.lower() == ('help'):
@@ -43,7 +44,7 @@ def title_screen():
             sys.exit()
 
 def title_screen():
-    os.system('clear')
+    os.system('cls')
     print('------------------------------------------')
     print('Welcome to Knights of the round table RPG!')
     print('------------------------------------------')
@@ -51,7 +52,7 @@ def title_screen():
     print('                 - Help -                 ')
     print('                 - Quit -                 ')
     print('     - Copyright 2023 KarlosMoodios -     ')
-    title_screen()
+    title_screen_selections()
 
 def help_menu():
     print('------------------------------------------')
@@ -103,9 +104,9 @@ room_map = {
         EXAMINATION: 'examine',
         SOLVED: False,
         UP: '',
-        DOWN: '',
+        DOWN: 'a2',
         LEFT: '',
-        RIGHT: 'a2',
+        RIGHT: 'b1',
     },
     'a2' : { 
         ROOMNAME: 'Castle gardens',
@@ -116,7 +117,7 @@ room_map = {
         EXAMINATION: 'examine',
         SOLVED: False,
         UP: 'up',
-        DOWN: 'down',
+        DOWN: 'a3',
         LEFT: 'left',
         RIGHT: 'right', 
     },
@@ -129,7 +130,7 @@ room_map = {
         EXAMINATION: 'examine',
         SOLVED: False,
         UP: 'up',
-        DOWN: 'down',
+        DOWN: 'a4',
         LEFT: 'left',
         RIGHT: 'right',
     },
@@ -140,7 +141,7 @@ room_map = {
         EXAMINATION: 'examine',
         SOLVED: False,
         UP: 'up', 
-        DOWN: 'down',
+        DOWN: 'a5',
         LEFT: 'left',
         RIGHT: 'right', 
     },
@@ -150,10 +151,10 @@ room_map = {
         Water just trickling out of the top and dribbling down the sides. It's almost as if there's a blockage somewhere.''',
         EXAMINATION: 'examine',
         SOLVED: False,
-        UP: 'up', 
-        DOWN: 'down',
-        LEFT: 'left',
-        RIGHT: 'right', 
+        UP: 'a4', 
+        DOWN: '',
+        LEFT: '',
+        RIGHT: '', 
     },
     'b1': { 
         ROOMNAME: 'Castle gardens',
@@ -162,10 +163,10 @@ room_map = {
         as if someone has tended these patches recently, strange...''',
         EXAMINATION: 'examine',
         SOLVED: False,
-        UP: 'up',
-        DOWN: 'down',
-        LEFT: 'left',
-        RIGHT: 'right',
+        UP: '',
+        DOWN: '',
+        LEFT: 'a1',
+        RIGHT: 'c1',
     },
     'b2': { 
         ROOMNAME: 'West Tower',
@@ -176,8 +177,8 @@ room_map = {
         There are 4 empty quivers on the table below the bow rack.''',# ladder needs mentioning
         EXAMINATION: 'Your quarters look the same, nothing has changed',
         SOLVED: False,
-        UP: 'x2y1',
-        DOWN: 'x2y3',
+        UP: '',
+        DOWN: 'b3',
         LEFT: '',
         RIGHT: '', 
     },
@@ -188,10 +189,10 @@ room_map = {
         along the eastern wall are oil lamps and horn paned windows looking out into what must be the courtyard.''',
         EXAMINATION: 'examine',
         SOLVED: False,
-        UP: 'up',
-        DOWN: 'down',
-        LEFT: 'left',
-        RIGHT: 'right', 
+        UP: 'b2',
+        DOWN: 'b4',
+        LEFT: '',
+        RIGHT: '', 
     },
     'b4': { 
         ROOMNAME: 'Kitchen / Cellar Entrance',
@@ -230,12 +231,17 @@ room_map = {
         sturdy as it was the day it was built. Would you like to enter? (yes/no) You try the latch 
         on the gate and its rusted solid; you take your hammer and give it a good swing down on the latch, 
         breaking it free just enough to open the gate.''',
-        EXAMINATION: 'examine',
+        EXAMINATION: '''After a long climb you reach the top of the hill, you finally arrive at what 
+you suspect to be the Castle of Camelot. It seems to be in good shape and looks safe to enter. 
+The castle is surrounded by an 8ft tall weathered iron fence, however, it seems to be as 
+sturdy as it was the day it was built. Would you like to enter? (yes/no) You try the latch 
+on the gate and its rusted solid; you take your hammer and give it a good swing down on the latch, 
+breaking it free just enough to open the gate.''',
         SOLVED: False,
-        UP: 'up',
-        DOWN: 'down',
-        LEFT: 'left',
-        RIGHT: 'right', 
+        UP: '',
+        DOWN: 'c1',
+        LEFT: '',
+        RIGHT: '', 
     },
     'c1': { 
         ROOMNAME: 'Castle gardens / Front gate',
@@ -433,21 +439,183 @@ room_map = {
 }
 
 # Game interactivity
+# Function to notify player of location and description
 def print_location():
     print('\n' + ('-' * (4 + len(player.loc))))
     print(' - ' + len(player.loc + ' - '))
+    print(' - ' + room_map[player1.position][DESCRIPTION] + ' - ')
     print('\n' + ('-' * (4 + len(player.loc))))
 
+# Function to prompt player for input
 def prompt():
     print('\n----------------------------')
     print('\n What would you like to do?')
+    action = input('> ')
+    acceptable_actions = ['move', 'go', 'travel', 'walk', 'quit', 'examine', 'inspect', 'interact', 'look']
+    while action.lower() not in acceptable_actions:
+        print('You cannot do that, try again')
+    if action.lower() == 'quit':
+        sys.exit()
+    elif action.lower() in ['move', 'go', 'travel', 'walk']:
+        player_move(action.lower())
+    elif action.lower() in ['examine', 'inspect', 'interact', 'look']:
+        player_examine(action.lower())
+
+# Function to move the player through the map
+def player_move(myAction):
+    ask = 'Where would you like to move?\n'
+    dest = input(ask)
+    if dest in ['up', 'north']:
+        destination = room_map[player1.loc][UP]
+        movement(destination)
+    elif dest in ['down', 'south']:
+        destination = room_map[player1.loc][DOWN]
+        movement(destination)
+    elif dest in ['left', 'west']:
+        destination = room_map[player1.loc][LEFT]
+        movement(destination)
+    elif dest in ['right', 'east']:
+        destination = room_map[player1.loc][RIGHT]
+        movement(destination)
+
+# Function for movement handling
+def movement(destination):
+    print('You have moved to the ' + destination + '.')
+    player1.loc = destination
+
+def player_examine(action):
+    if room_map[player1.loc][SOLVED]:
+        print('This room has been completed already')
+    else:
+        print(room_map[player1.loc][EXAMINATION])
 
 # Game functionality
+def main():
+    while player1.game_over is False:
+        prompt()
+
+def ai_chat(question):
+    q = question
+    for c in q:
+        sys.stdout.write(c)
+        sys.stdout.flush()
+        time.sleep(0.02)
+
+# AI dialogue
+QUESTION = '', '' + player1.name + '', '' + player1.gender + '' 
+ai_dialogue = {
+    'q1': {QUESTION:'Would you like to reclaim Camelot? (yes/no)\n'},
+    'q2': {QUESTION:'Welcome to Camelot Castle! Whats is your name?\n'},
+    'q3': {QUESTION:'What is your gender? (Male/Female/Anything)\n'},
+    'q4': {QUESTION:'Would you like to play solo or as a team (AI)'},
+    'q5': {QUESTION:'Lets create some knights for your round table!\n'},
+    'q6': {QUESTION:'Enter the name of your 1st Knight:\n'},
+    'q7': {QUESTION:'Enter the name of your 2nd Knight:\n'},
+    'q8': {QUESTION:'Enter the name of your 3rd Knight:\n'},
+    'q9': {QUESTION:'Please enter a valid name.\n'},
+    'q10': {QUESTION:'\n'},
+    'q11': {QUESTION:'\n'},
+    'q12': {QUESTION:'\n'},
+    'q13': {QUESTION:'\n'},
+    'q14': {QUESTION:'\n'},
+    'q15': {QUESTION:'\n'},
+    'q16': {QUESTION:'\n'},
+    'q17': {QUESTION:'\n'},
+    'q18': {QUESTION:'\n'},
+    'q19': {QUESTION:'\n'},
+    'q20': {QUESTION:'\n'},
+    'q21': {QUESTION:'Your chosen knight names are: \n'},
+    'q22': {QUESTION:'Good luck on your adventure!\n'},
+}
+
 def start_game():
-    return
+    
+    os.system('cls')
+
+    ai_chat(ai_dialogue['q1'][QUESTION])
+    ans = input('> ')
+    if ans.strip().lower() == 'yes':
+        round_table = 12
+        knights_count = 0
+        knight_list = []
+
+        ai_chat(ai_dialogue['q2'][QUESTION])
+        player1.name = input('> ')
+        ai_chat(ai_dialogue['q3'][QUESTION])
+        player1.gender = input('> ') 
+        if player1.gender.strip().lower() == 'male':
+            player1.gender = 'King'
+        elif player1.gender.strip().lower() == 'female' :
+            player1.gender = 'Queen'
+        else:
+            player1.gender = player1.gender
+        greet_msg = 'Greetings ' + player1.gender + ' ' + player1.name + '!\n'
+        ai_chat(greet_msg)
+        time.sleep(1)
+        ai_chat(ai_dialogue['q4'][QUESTION])
+        solo_coop = input('> ')
+        if solo_coop.strip().lower() == 'coop':
+            ai_chat(ai_dialogue['q5'][QUESTION])
+            while knights_count < round_table:
+                if knights_count == 0:
+                    ai_chat(ai_dialogue['q6'][QUESTION])
+                    name = input('> Sir: ')
+                    if name == "":
+                        ai_chat(ai_dialogue['q9'][QUESTION])
+                        knights_count -= 1
+                    else:
+                        knight_list.append('Sir ' + name)
+
+                elif knights_count == 1:
+                    ai_chat(ai_dialogue['q7'][QUESTION])
+                    name = input('> Sir: ')
+                    if name == "":
+                        ai_chat(ai_dialogue['q9'][QUESTION])
+                        knights_count -= 1
+                    else:
+                        knight_list.append('Sir ' + name)
+
+                elif knights_count == 2:
+                    ai_chat(ai_dialogue['q8'][QUESTION])
+                    name = input('> Sir: ')
+                    if name == "":
+                        ai_chat(ai_dialogue['q9'][QUESTION])
+                        knights_count -= 1
+                    else:
+                        knight_list.append('Sir ' + name)
+
+                elif knights_count < round_table:
+                    n = str(knights_count + 1)
+                    ai_chat('Enter the name of your '+ n + 'th Knight: \n')
+                    name = input('> Sir: ')
+                    if name == "":
+                        ai_chat(ai_dialogue['q9'][QUESTION])
+                        knights_count -= 1
+                    else:
+                        knight_list.append('Sir ' + name)   
+                knights_count += 1
+                n = str(knights_count)
+                if knights_count == 1:
+                    ai_chat("You have " + n + " Knight at the round table.\n")
+                else:
+                    ai_chat("You have " + n + " Knights at the round table.\n")
+            ai_chat(ai_dialogue['q21'][QUESTION])
+            for x in knight_list:
+                sys.stdout.write(x)
+                sys.stdout.write(', ')
+                sys.stdout.flush()
+                time.sleep(0.5)
+            print('\n')
+            #  End of choosing Knight names
+
+    else:
+        ai_chat(ai_dialogue['q9'][QUESTION])
+    
+    os.system('cls')
+    ai_chat(ai_dialogue['q22'][QUESTION])
+    main()
 
 
-
-
+title_screen()
 
 

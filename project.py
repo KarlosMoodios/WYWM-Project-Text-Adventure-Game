@@ -7,7 +7,7 @@ if start.strip().lower() == "yes":
 
     print("Welcome to Camelot Castle! Whats is your name?")
     playerName = input("Enter your name here: ")
-    print("Greetings King ", playerName,"!", sep="")
+    print("Greetings King ", playerName,"!", sep='')
     print("Lets create some knights for your round table!")
     while True:
         #  Choosing Knight names
