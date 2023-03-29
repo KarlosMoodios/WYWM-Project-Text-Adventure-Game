@@ -1,4 +1,4 @@
-# Reclaim Camelot Castle textRPG
+# Camelot Castle textRPG
 # Created by Karl Moody
 
 import cmd
@@ -52,7 +52,7 @@ def title_screen():
     ai_chat(dia['q16'][Q], s['s0'][S])
     ai_chat(dia['q17'][Q], s['s0'][S])
     ai_chat(dia['q18'][Q], s['s0'][S])
-    ai_chat(dia['q19'][Q], s['s2'][S])
+    ai_chat(dia['q19'][Q], s['s1'][S])
     title_screen_selections()
 
 def help_menu():
@@ -65,8 +65,8 @@ def help_menu():
     ai_chat(dia['q22'][Q], s['s0'][S])
     ai_chat(dia['q23'][Q], s['s0'][S])
     ai_chat(dia['q26'][Q], s['s0'][S])
-    done = input('> ')
-    if done.strip().lower() == 'yes':
+    done = input('> ').strip().lower()
+    if done == 'yes':
         title_screen()
     else: 
         help_menu()
@@ -98,14 +98,15 @@ RIGHT = 'right', 'east'
 FLOOR = 'use'
 
 solved_rooms = {              'a1' : False, 'a2' : False, 'a3' : False, 'a4' : False, 'a5' : False, 
-                              'b1' : False, 'b2' : False, 'b3' : False, 'b4' : False, 'b5' : False,
+                              'b1' : False, 'b2' : False, 'b3' : False, 'b4' : False, 'b5' : False, 'b6' : False, 'b7' : False, 'b8' : False,
                 'c0' : False, 'c1' : False, 'c2' : False, 'c3' : False, 'c4' : False, 'c5' : False,
                               'd1' : False, 'd2' : False, 'd3' : False, 'd4' : False, 'd5' : False,
-                              'e1' : False, 'e2' : False, 'e3' : False, 'e4' : False, 'e5' : False, }
+                              'e1' : False, 'e2' : False, 'e3' : False, 'e4' : False, 'e5' : False, 
+                              'z1' : False, 'z2' : False }
 
 room_map = {
     'a1' : {
-        ROOMNAME: 'Castle gardens',
+        ROOMNAME: '- Castle gardens -',
         EXAMINATION: '''Castle gardens - Two water fountains with a path leading through the middle of them and round to the south,\n
 the water in these fountains glows an almost magical sparkle as the water shoots out from one, over your head\n
 into the other and back again.''',
@@ -115,9 +116,10 @@ into the other and back again.''',
         DOWN: 'a2',
         LEFT: '',
         RIGHT: 'b1',
+        FLOOR: '',
     },
     'a2' : { 
-        ROOMNAME: 'Castle gardens',
+        ROOMNAME: '- Castle gardens -',
         EXAMINATION: '''You can see the path continues to the south, right up to the fence. On your left, 
 against the castle wall are a series of support pillars that run the length of the castle wall each with 
 window covered by a horn pane situated between them, in the soil below are some sunflowers. You can 
@@ -127,10 +129,11 @@ continue south or head back the way you came''',
         UP: 'a1',
         DOWN: 'a3',
         LEFT: '',
-        RIGHT: '', 
+        RIGHT: '',
+        FLOOR: '', 
     },
     'a3': { 
-        ROOMNAME: 'Castle gardens - Front Gate',
+        ROOMNAME: '- Castle gardens -',
         EXAMINATION: '''Gardens - In this part of the garden there are two benches looking onto charred ground, 
 what looks like it was once a flower bed; I wonder why only the flower bed is charred. In the center 
 of the flower bed stands a tall statue of a King, though no inscription is present. Behind the northern 
@@ -141,9 +144,10 @@ bench the horn pane over the window looks loose enough to pry it open with your 
         DOWN: 'a4',
         LEFT: '',
         RIGHT: '',
+        FLOOR: '',
     },
     'a4': { 
-        ROOMNAME: 'Castle gardens',
+        ROOMNAME: '- Castle gardens -',
         EXAMINATION: '''Gardens / Cellar Entrance - In the overgrown grass of the gardens I can see what looks like 
 a cellar door buried by some debris, I'll need to find some tools to clear this if i want to gain access through here''',
         DESCRIPTION: 'North of the southwest corner in the castle gardens.',
@@ -151,10 +155,11 @@ a cellar door buried by some debris, I'll need to find some tools to clear this 
         UP: 'a3', 
         DOWN: 'a5',
         LEFT: '',
-        RIGHT: 'c5', 
+        RIGHT: 'z1',
+        FLOOR: '', 
     },
     'a5': { 
-        ROOMNAME: 'Castle gardens',
+        ROOMNAME: '- Castle gardens -',
         EXAMINATION: '''Gardens - At the end of the path is another water fountain, functional but not completely. 
 Water just trickling out of the top and dribbling down the sides. It's almost as if there's a blockage somewhere.''',
         DESCRIPTION: 'The southwest corner of the castle gardens.',
@@ -162,10 +167,11 @@ Water just trickling out of the top and dribbling down the sides. It's almost as
         UP: 'a4', 
         DOWN: '',
         LEFT: '',
-        RIGHT: '', 
+        RIGHT: '',
+        FLOOR: '', 
     },
     'b1': { 
-        ROOMNAME: 'Castle gardens',
+        ROOMNAME: '- Castle gardens -',
         EXAMINATION: '''Castle gardens - Two large flower beds sown into the garden either side of the path, 
 both have lively looking plants that seem to be growing well, the soil looks rich with nutrients 
 as if someone has tended these patches recently, strange...''',
@@ -175,9 +181,10 @@ as if someone has tended these patches recently, strange...''',
         DOWN: '',
         LEFT: 'a1',
         RIGHT: 'c1',
+        FLOOR: '',
     },
     'b2': { 
-        ROOMNAME: 'West Tower',
+        ROOMNAME: '- West Tower -',
         EXAMINATION: '''West Tower - Ladder Up, The bottom of the western tower. 
 There are some armour stands in here with armour on them. Some pieces are missing from the suits. 
 Along the wall there is a bow rack, there's room enough for four bows, only one bow is present 
@@ -193,19 +200,20 @@ You can see a ladder leading up through the tower.''',
         FLOOR: 'b6', # need to build upper floor map
     },
     'b3': { 
-        ROOMNAME: 'West Tower Passage',
+        ROOMNAME: '- West Tower Passage -',
         EXAMINATION: '''West Tower Passage -  an almost empty halllway leading to the tower on the west side of the castle. 
-There is a stool and a small table along the western wall and a huge crested shield hanging on the wall above it 
-along the eastern wall are oil lamps and horn paned windows looking out into what must be the courtyard.''',
+There is a stool and a small table along the western wall and a huge crested shield hanging above it.
+Along the eastern wall are oil lamps and horn paned windows looking out into the courtyard.''',
         DESCRIPTION: 'A passage leading from the trophy room to the west tower.',
         SOLVED: False,
         UP: 'b2',
         DOWN: 'b4',
         LEFT: '',
         RIGHT: '', 
+        FLOOR: '',
     },
     'b4': { 
-        ROOMNAME: 'Trophy Room',
+        ROOMNAME: '- Trophy Room -',
         EXAMINATION: '''Trophy Room - What looks like a trophy room. There are skulls of fallen behemoth-like 
 creatures sitting around the room. A huge dragon shaped head hanging from the wall. 
 If only there was someone I could talk with about these who knows the story of their origin.''',
@@ -215,36 +223,70 @@ If only there was someone I could talk with about these who knows the story of t
         DOWN: 'b5',
         LEFT: '',
         RIGHT: 'c4',
+        FLOOR: '',
     },
     'b5': { 
-        ROOMNAME: 'Staircase',
-        EXAMINATION: '''A grand staircase leads up to the top floor of the castle, the stairs look to be in great shape.
+        ROOMNAME: '- Staircase -',
+        EXAMINATION: '''A grand staircase leading up to the top floor of the castle, the stairs look to be in great shape.
 The banister rails not so much. The knights' living quarters must be up there.''',
+        DESCRIPTION: 'A room with an old staircase.',
+        SOLVED: False,
+        UP: 'b4',
+        DOWN: '',
+        LEFT: '',
+        RIGHT: '',
+        FLOOR: 'b6', # needs creating
+    },
+    'b6': { 
+        ROOMNAME: '- Landing -',
+        EXAMINATION: '''You can see two directions ahead, each leading to a large room. 
+One room has no door and the other has a thick, wooden door with a crown carved into its center.''',
+        DESCRIPTION: 'An room with an old staircase.',
+        SOLVED: False,
+        UP: 'b7',
+        DOWN: '',
+        LEFT: '',
+        RIGHT: 'b8',
+        FLOOR: 'b5', # needs creating
+    },
+    'b7': { 
+        ROOMNAME: '- Knights quarters -',
+        EXAMINATION: '''''',
+        DESCRIPTION: 'A room with an old staircase.',
+        SOLVED: False,
+        UP: '',
+        DOWN: 'b6',
+        LEFT: '',
+        RIGHT: '',
+        FLOOR: '', # needs creating
+    },
+    'b8': { 
+        ROOMNAME: '- Kings quarters -',
+        EXAMINATION: '''''',
         DESCRIPTION: 'An room with an old staircase.',
         SOLVED: False,
         UP: '',
         DOWN: '',
-        LEFT: '',
+        LEFT: 'b6',
         RIGHT: '',
-        FLOOR: 'b7', # needs creating
+        FLOOR: '', # needs creating
     },
     'c0': { 
-        ROOMNAME: '            - Start -\n',
+        ROOMNAME: '- Start -',
         EXAMINATION: '''After a long climb you reach the top of the hill, you finally arrive at what 
-you suspect to be the Castle of Camelot. It seems to be in good shape and looks safe to enter. 
+you suspect to be the Castle of Camelot with nothing but your hammer and sword. It seems to be in good shape and looks safe to enter. 
 The castle is surrounded by an 8ft tall weathered iron fence, however, it seems to be as 
-sturdy as it was the day it was built. Would you like to enter? (yes/no) You try the latch 
-on the gate and its rusted solid; you take your hammer and give it a good swing down on the latch, 
-breaking it free just enough to open the gate.''',
+sturdy as it was the day it was built. ''',
         DESCRIPTION: 'The entrance to the castle grounds.',
         SOLVED: False,
         UP: '',
-        DOWN: 'c1',
+        DOWN: '',
         LEFT: '',
         RIGHT: '', 
+        FLOOR: '',
     },
     'c1': { 
-        ROOMNAME: 'Castle gardens / Front gate',
+        ROOMNAME: '- Castle gardens / Front gate -',
         EXAMINATION: '''Castle Gardens - A once mighty iron gate now rusted and creeks as it opens. \n
 You enter through the front gate it slams shut behind you. you notice either side of the path 2 statue plinths, \n
 one of them with the statue of a mighty looking king atop and a plaque that reads "Arthur - King of the Britons, \n
@@ -257,22 +299,24 @@ The path before you splits into three directions: East, south and west.''',
         DOWN: 'c2',
         LEFT: 'b1',
         RIGHT: 'd1', 
+        FLOOR: '',
     },
     'c2': { 
-        ROOMNAME: 'Courtyard Entrance',
+        ROOMNAME: '- Courtyard Entrance -',
         EXAMINATION: '''Courtyard Entrance - Either side of the arch are 2 huge support pillars reaching 
 way up to the top of the towers on each side of the entrance. Both have ivy growing up them. If thats 
-not kept in check it could cause structural damage to the castle. Through the archway you can see a 
+not kept in check it could cause structural damage to the castle. Through the portcullis which blocks the archway, you can see a 
 large fountain. Each layer of the fountain bears the shape of a crown, definitely fit for a king!''',
         DESCRIPTION: 'An arch shaped tunnel leading into the courtyard of the castle.',
         SOLVED: False,
         UP: 'c1',
-        DOWN: 'c3',
+        DOWN: '',
         LEFT: '',
         RIGHT: '',
+        FLOOR: '',
     },
     'c3': { 
-        ROOMNAME: 'Castle courtyard',
+        ROOMNAME: '- Castle courtyard -',
         EXAMINATION: '''There is a huge, empty water fountain in the center and flower beds all around the perimeter 
 of the courtyard. The flower beds are full of life. There are horn paned windows all around and a huge 
 wooden door with iron trimmings and bronze handles. The windows all look sealed shut and the door is closed. 
@@ -280,13 +324,14 @@ Would you like to enter the door? (yes/no)
 The door is barred from the inside, maybe you can find another way in?''',
         DESCRIPTION: 'A beautiful courtyard filled with statues, flowers and a fountain.',
         SOLVED: False,
-        UP: 'c2',
+        UP: '',
         DOWN: 'c4',
         LEFT: '',
         RIGHT: '', 
+        FLOOR: '',
     },
     'c4': { 
-        ROOMNAME: 'Main Hall',
+        ROOMNAME: '- Main Hall -',
         EXAMINATION: '''What a sight, the table where Arthur and his 12 knights conferred about their adventures. 
 The table looks strong! As you wipe away the thick layer of dust coating the table you can see the 
 inscriptions of each knights name in the table as a placeholder for where they each sat. Many a feast 
@@ -296,10 +341,11 @@ must have been eaten at this table and ale drunk too.''',
         UP: 'c3',
         DOWN: 'c5',
         LEFT: 'b4',
-        RIGHT: 'c4', 
+        RIGHT: 'd4',
+        FLOOR: '', 
     },
     'c5': { 
-        ROOMNAME: 'Kitchen / Cellar Entrance',
+        ROOMNAME: '- Kitchen / Cellar Entrance -',
         EXAMINATION: '''Kitchen / Cellar Entrance - a large kitchen big enough to prepare 
 a feast for at least 13 people each and every time. a large table covered in surface 
 slits in the center of the room, presumably where they carved up their food. 
@@ -314,10 +360,10 @@ There is a key hole, so maybe there is a key.''',
         DOWN: '',
         LEFT: '',
         RIGHT: '', 
-        FLOOR: 'z1' # cellar could be a room, needs coding
+        FLOOR: 'z1', # cellar could be a room, needs coding
     },
     'd1': { 
-        ROOMNAME: 'Castle gardens',
+        ROOMNAME: '- Castle gardens -',
         EXAMINATION: '''Gardens - The small flower bed to the north has soil 
 that looks like clay and definitely hasn\'t been tended to in a while. 
 Surpirsingly there is life in the flowers here however they do seem to be dying out. 
@@ -330,9 +376,10 @@ is compact from where the rain has fallen on it over the years.''',
         DOWN: '',
         LEFT: 'c1',
         RIGHT: 'e1', 
+        FLOOR: '',
     },
     'd2': { 
-        ROOMNAME: 'East tower',
+        ROOMNAME: '- East tower -',
         EXAMINATION: '''A Ladder in the back of the room that goes down goes to the dungeons and up through the tower, 
 the ladder down has rotted and theres no way down, however, the ladder going up seems sturdy. The are a number of 
 empty wall torch brackets around the room. Only one has a torch and it's unlit. Do you want to take the torch? (yes/no)''',
@@ -342,9 +389,10 @@ empty wall torch brackets around the room. Only one has a torch and it's unlit. 
         DOWN: 'd3',
         LEFT: '',
         RIGHT: '', 
+        FLOOR: '',
     },
     'd3': { 
-        ROOMNAME: 'East Tower Passage',
+        ROOMNAME: '- East Tower Passage -',
         EXAMINATION: '''East Tower Passage - a passage filled with empty barrels and crates. 
 Empty torch hangings on the walls and sealed windows. Must be a storage room of sorts. 
 Either that or it was barricaded. There is room to just about clamber through to the 
@@ -355,9 +403,10 @@ other side to get to the east tower. ''',
         DOWN: 'd4',
         LEFT: '',
         RIGHT: '', 
+        FLOOR: '',
     },
     'd4': { 
-        ROOMNAME: 'Armoury',
+        ROOMNAME: '- Armoury -',
         EXAMINATION: '''The armoury! Shame there are no armour or weapons in here though! Just empty 
 armour stands surrounding the edge of the room. Cobwebs reach from armour stand to armour stand, 
 built by spiders that are nowhere to be seen. This room hasn't be disturbed in a long time.''',
@@ -367,9 +416,10 @@ built by spiders that are nowhere to be seen. This room hasn't be disturbed in a
         DOWN: 'd5',
         LEFT: 'c4',
         RIGHT: '', 
+        FLOOR: '',
     },
     'd5': { 
-        ROOMNAME: 'Blacksmith',
+        ROOMNAME: '- Blacksmith -',
         EXAMINATION: '''The coldest room in the building, once the hottest. There sits a great forge at 
 the back of the room, with a chimney that goes directly out the roof. The coal chamber beside it 
 filled half full with coal. Sitting on one of the anvils an unfinished sword. Whomever left here 
@@ -380,9 +430,10 @@ did so in a hurry. There's a bucket of oil beside the furnace which has been cov
         DOWN: '',
         LEFT: '',
         RIGHT: '', 
+        FLOOR: '',
     },
     'e1': { 
-        ROOMNAME: 'Castle gardens',
+        ROOMNAME: '- Castle gardens -',
         EXAMINATION: '''Two water fountains are in this corner of the gardens, both filled 
 with thick green algae sludgey water, though there is a slight breeze, the surface of the 
 water remain perfectly, eerily still. One of them has a crack running from the top of the 
@@ -395,9 +446,10 @@ in need of repair and sinking into the boggy grass.''',
         DOWN: 'e2',
         LEFT: 'd1',
         RIGHT: '',  
+        FLOOR: '',
     },
     'e2': { 
-        ROOMNAME: 'Castle gardens',
+        ROOMNAME: '- Castle gardens -',
         EXAMINATION: '''Gardens - The grass along this side of the castle is very boggy. There are support 
 pillars along the length of the castle wall, with windows covered by horn panes. there are no 
 flowers or flower beds, and a lot of moss growing across the ground. Best to watch your footing.''',
@@ -407,9 +459,10 @@ flowers or flower beds, and a lot of moss growing across the ground. Best to wat
         DOWN: 'e3',
         LEFT: '',
         RIGHT: '',  
+        FLOOR: '',
     },
     'e3': { 
-        ROOMNAME: 'Castle gardens',
+        ROOMNAME: '- Castle gardens -',
         EXAMINATION: '''Gardens - More boggy grass, still nothing of interest in the immediate area. 
 You can see something sticking out of the ground at the end of the garden.''',
         DESCRIPTION: 'Halfway between the northeast and southeast fences in the castle gardens.',
@@ -418,9 +471,10 @@ You can see something sticking out of the ground at the end of the garden.''',
         DOWN: 'e4',
         LEFT: '',
         RIGHT: '',  
+        FLOOR: '',
     },
     'e4': { 
-        ROOMNAME: 'Castle gardens',
+        ROOMNAME: '- Castle gardens -',
         EXAMINATION: '''Gardens - The ground gets significantly more boggy here. As you approch the end of the garden you 
 can see more clearly the shape of a hand sticking out of the mud. Specifically an iron gauntlet reaching upwards. 
 It might be too dangerous to step onto that part of the garden, Are you sure you want to proceed? (yes/no)''',
@@ -430,9 +484,10 @@ It might be too dangerous to step onto that part of the garden, Are you sure you
         DOWN: 'e5',
         LEFT: '',
         RIGHT: '', 
+        FLOOR: '',
     },
     'e5': { 
-        ROOMNAME: 'Castle gardens',
+        ROOMNAME: '- Castle gardens -',
         EXAMINATION: '''Gardens - bog of death, for every second the player enters this room they will lose 5 hp. 
 If the player dies They will be reset to inside the Front Gate. 
 You start to sink! now its clear that the gauntlet once belonged to an adventurer. you better get out of here fast''',
@@ -442,104 +497,246 @@ You start to sink! now its clear that the gauntlet once belonged to an adventure
         DOWN: '',
         LEFT: '',
         RIGHT: '', 
+        FLOOR: '',
+    },
+    'z1': { 
+        ROOMNAME: '- Cellar -',
+        EXAMINATION: '''Now that you have a lit torch you\'re able to see what\'s in the room. The king clearly trusted 
+nobody with his wine collection! He must have kept the key with him and passed it down to the chef only when it was needed!''',
+        DESCRIPTION: 'The cellar beneath the castle.',
+        SOLVED: False,
+        UP: '',
+        DOWN: '',
+        LEFT: 'a4',
+        RIGHT: '', 
+        FLOOR: 'c5',
+    },
+    'z2': { 
+        ROOMNAME: '- Dungeon -',
+        EXAMINATION: '''After fixing the ladder you have gained access to the dungeon. With your torch lighting up the room you can clearly see that whatever 
+it was that drew the king and his men away from the castle, they must have done so in a hurry. 
+There's a skeleton in the cell who presumably died of starvation and has been here for a long time.''',
+        DESCRIPTION: 'The cellar beneath the castle.',
+        SOLVED: False,
+        UP: '',
+        DOWN: '',
+        LEFT: '',
+        RIGHT: '', 
+        FLOOR: 'd2',
     },
 }
 
 # Game interactivity
-# Function to notify player of location and description
+# Style and display location with description 
 def print_location():
-    print('\n' + ('-' * (6 + len(room_map[player1.loc][DESCRIPTION]))))
-    print(' - ' + room_map[player1.loc][ROOMNAME] + ' - ')
-    print(' - ' + room_map[player1.loc][DESCRIPTION] + ' - ')
-    print('\n' + ('-' * (6 + len(room_map[player1.loc][DESCRIPTION]))))
+    x = (len(room_map[player1.loc][DESCRIPTION])) - (len(room_map[player1.loc][ROOMNAME]))
+    ai_chat('\n' + ('-' * (6 + len(room_map[player1.loc][DESCRIPTION]))), s['s0'][S])
+    ai_chat('\n' + (' ' * (4 + x // 2)) + room_map[player1.loc][ROOMNAME], s['s0'][S])
+    ai_chat('\n' + (' ' * 4) + room_map[player1.loc][DESCRIPTION], s['s0'][S])
+    ai_chat('\n' + ('-' * (6 + len(room_map[player1.loc][DESCRIPTION]))), s['s0'][S])
 
-# Function to prompt player for input
+# Prompt player for input
 def prompt():
-    print('\n What would you like to do?')
-    ai_chat('Move options: Move, Go, Travel, Walk\n', s['s0'][S])
-    ai_chat('Examine: Examine, Inspect, Interact, Look\n', s['s0'][S])
-    ans = input('> ')
+    ai_chat('\nWhat would you like to do?', s['s1'][S])
+    ai_chat('\nMove options: Move, Go, Travel, Walk,', s['s1'][S])
+    ai_chat('\nExamine options: Examine, Inspect, Look,', s['s1'][S])
+    ai_chat('\nInteraction options: Interact, Use, Open.', s['s1'][S])
+    ans = input('\n> ')
     action = ans.strip().lower()
-    acceptable_actions = ['move', 'go', 'travel', 'walk', 'quit', 'examine', 'inspect', 'interact', 'look', 'locate']
+    acceptable_actions = ['move', 'go', 'travel', 'walk', 'quit', 'examine', 'inspect', 'interact', 'look', 'locate', 'open', 'use']
     while action not in acceptable_actions:
-        print('You cannot do that, try again')
+        ai_chat('You cannot do that, try again', s['s0'][S])
         break
-    if action == 'quit':
+    if action == 'quit' or action == 'exit':
         sys.exit()
     elif action in ['move', 'go', 'travel', 'walk']:
         player_move(action)
-    elif action in ['examine', 'inspect', 'interact', 'look']:
-        print('Options: Examine, Inspect, Interact, Look')
+    elif action in ['examine', 'inspect', 'look']:
         player_examine(action)
+    elif action in ['interact', 'use', 'open']:
+        interact(action)
     elif action in ['locate']:
         print_location()
     else:
         prompt()
 
-# Function to move the player through the map
+# Move the player
 def player_move(myAction):
     
     ai_chat(dia['q27'][Q], s['s2'][S])
-    dest = input('> ')
+    dest = input('> ').strip().lower()
     if dest in ['up', 'north']:
         destination = room_map[player1.loc][UP]
-        if destination == '':
+        if destination == '' and player1.loc == 'c3':
+            ai_chat('The portcullis is locked and can only be opened using the winching mechanism beside you.\n', s['s1'][S])
+            time.sleep(1)
+        elif destination == '':
             ai_chat('You can\'t go that way!\n', s['s0'][S])
         else:
             movement(destination)
     elif dest in ['down', 'south']:
         destination = room_map[player1.loc][DOWN]
-        if destination == '':
+        if destination == '' and player1.loc == 'c0':
+            ai_chat('You try the latch on the gate but it\'s rusted solid! Try something else...\n', s['s1'][S])
+            time.sleep(1)
+        elif destination == '' and player1.loc == 'c2':
+            ai_chat('The portcullis is locked and can only be opened from the inside. Maybe you can find the right way in somewhere else.\n', s['s1'][S])
+            time.sleep(1)
+        elif destination == '':
             ai_chat('You can\'t go that way!\n', s['s0'][S])
+            time.sleep(1)
         else:
             movement(destination)
     elif dest in ['left', 'west']:
         destination = room_map[player1.loc][LEFT]
         if destination == '':
             ai_chat('You can\'t go that way!\n', s['s0'][S])
+            time.sleep(1)
         else:
             movement(destination)
     elif dest in ['right', 'east']:
         destination = room_map[player1.loc][RIGHT]
         if destination == '':
             ai_chat('You can\'t go that way!\n', s['s0'][S])
+            time.sleep(1)
+        elif destination == 'z1' and room_map['b8'][SOLVED] == False:
+            ai_chat('The Door on the cellar is locked, maybe theres a key somewhere...\n', s['s0'][S])
+            time.sleep(1)
+        else:
+            movement(destination)
+    elif dest in ['ladder', 'stairs']:
+        destination = room_map[player1.loc][FLOOR]
+        if destination == '' and room_map['d5'][SOLVED] == False and player1.loc == 'd2':
+            ai_chat('\nThis ladder needs fixing before you can use it.', s['s1'][S])
+        elif destination == '':
+            ai_chat('You can\'t go that way!\n', s['s0'][S])
+            time.sleep(1)
         else:
             movement(destination)
     elif dest is 'cancel':
-        prompt()          
+        prompt()
+
 # Function for movement handling
 def movement(destination):
-    print_location()
     player1.loc = destination
+    print_location()
 
+# Examine surroundings 
 def player_examine(action):
     if room_map[player1.loc][SOLVED]:
         print('This room has been completed already')
     else:
         print(room_map[player1.loc][EXAMINATION])
 
+# Location based interaction with objects
+def interact(obj):
+    print ('\nWhat would you like to interact with?')
+    obj = input('> ').strip().lower()
+    objects = ['dumbwaiter', 'torch', 'bucket', 'plank', 'tools', 'lock', 'portcullis', 'gate', 'window', 'ladder' ]
+    while obj not in objects:
+        ai_chat('You cannot do that, try again', s['s0'][S])
+        break
+    if player1.loc == 'b8' and obj in objects:
+        ai_chat('\nYou open the dumbwaiter and find a key, what could this be for?', s['s0'][S])
+        time.sleep(1)
+        room_map['b8'][SOLVED] = True
+    if player1.loc == 'c5' and obj in objects:
+        ai_chat('\nYou open the dumbwaiter and find that the pulley system is jammed, the tray must be somewhere else in the building.', s['s1'][S])
+        time.sleep(1)
+    if player1.loc == 'c3' and obj in objects:
+        ai_chat('\nAs you turn the wheel the chains grind and emit a cloud of rusty dust into the air, luckily the chains are strong enough to lift the portcullis and it opens.', s['s1'][S])
+        time.sleep(1)
+        room_map['c2'][DOWN] = 'c3'
+        room_map['c3'][DOWN] = 'c2'
+        room_map['c3'][SOLVED] = True
+    if player1.loc == 'c0' and obj in objects:
+        ai_chat(dia['q28'][Q], s['s0'][S])
+        ans = input('> ').strip().lower()
+        acceptable_answers = ['hammer', 'sword']
+        while ans not in acceptable_answers:
+            ai_chat('Please Choose a valid option. (hammer/Sword)', s['s1'][S])
+        if ans == 'hammer':
+            ai_chat('''\nYou swing your hammer down on the latch, breaking it free just enough to open the gate. You enter through and the gate slams shut behind you.''', s['s1'][S])
+            time.sleep(1)
+            room_map['c0'][DOWN] = 'c1'
+            destination = room_map[player1.loc][DOWN]
+            movement(destination)
+        elif ans == 'sword':
+            ai_chat('\nYou wedge your sword under the latch and use leverage to break the latch free but it doesn\'t work. Maybe there\'s another tool you could try?',s['s1'][S])
+            time.sleep(1)
+    if player1.loc == 'c4' and obj in objects:
+        ai_chat(dia['q29'][Q], s['s0'][S])
+        ans = input('> ').strip().lower()
+        if ans == 'yes':
+            ai_chat('You take the torch from the wall mount, now to find some fuel.\n', s['s1'][S])
+            room_map['c4'][SOLVED] = True
+        elif ans == 'no':
+            ai_chat('You leave the torch on the wall.\n', s['s1'][S])     
+        else:
+            ai_chat(dia['q10'][Q], s['s1'][S])
+    if player1.loc == 'd5' and room_map['c4'][SOLVED] == True and obj in objects:
+        ai_chat('Would you like to remove the plank off the bucket of oil? (Yes/No)\n', s['s1'][S])
+        ans = input('> ').strip().lower()
+        if ans == 'yes':
+            ai_chat('Would you like to use the torch with the bucket of oil? (Yes/No)\n', s['s1'][S])
+            ans = input('> ').strip().lower()
+            if ans == 'yes':
+                ai_chat('You douse the torch in oil.\n', s['s1'][S])
+                time.sleep(1)
+                ai_chat('Would you like to light your torch? (Yes/No)\n', s['s1'][S])
+                ans = input('> ').strip().lower()
+                if ans == 'yes':
+                    ai_chat('You light the torch and immediately you\'re able to see more clearly. You notice some tools in the back of the room and some crafting materials, would you like to take some? (Yes/No)\n', s['s1'][S])
+                    ans = input('> ').strip().lower()
+                    if ans == 'yes':
+                        ai_chat('You gather some tools and materials', s['s1'][S])
+                        room_map['d5'][SOLVED] = True
+    if player1.loc == 'a3' and obj in objects:
+        ai_chat('The window pane looks loose enough to pry off, would you like to use your hammer or sword?', s['s0'][S])
+        ans = input('> ').strip().lower()
+        acceptable_answers = ['hammer', 'sword']
+        while ans not in acceptable_answers:
+            ai_chat('Please Choose a valid option. (hammer/Sword)', s['s1'][S])
+            break
+        if ans == 'hammer':
+            ai_chat('''\You wedge the claw end of your hammer into the window but fail to gain enough leverage to pry the window open.''', s['s1'][S])
+            time.sleep(1)
+        elif ans == 'sword':
+            ai_chat('\nYou wedge your sword into the gap and use leverage to break the pane free from the window. Finally, a way into the castle!', s['s1'][S])
+            time.sleep(0.5)
+            room_map['a3'][RIGHT] = 'b3'
+            ai_chat('\nWould you like to enter? (Yes/No)',s['s1'][S])
+            ans = input('> ').strip().lower()
+            if ans == 'yes':
+                destination = room_map[player1.loc][RIGHT]
+                movement(destination)
+            elif ans == 'no':
+                ai_chat('\nYou stay in the castle gardens.', s['s1'][S])
+            else:
+                ai_chat(dia['q10'][Q], s['s0'][S])
+    if player1.loc == 'd2' and room_map['d5'][SOLVED] == True and obj in objects:
+        ai_chat('Would you like to fix the ladder? (Yes/No)', s['s1'][S])
+        ans = input('> ').strip().lower()
+        if ans == 'yes':
+            ai_chat('\nYou fix the ladder with the tools and materials you found in the blacksmith room.', s['s1'][S])
+            room_map['d2'][FLOOR] = 'z2'
+        elif ans == 'no':
+            ai_chat('\nYou decide not to fix the ladder.', s['s1'][S])
+        else:
+            ai_chat(dia['q10'][Q], s['s0'][S])
+
 # Game functionality
 def main():
     while player1.game_over is False:
         prompt()
 
-S = ''
-s = {'s0':{S:0.002},'s1':{S:0.01}, 's2':{S:0.02}, 's3':{S:0.04}, 's4':{S:0.05}, 's5':{S:0.1}}
-def ai_chat(question, speed):
-    s = speed
-    q = question
-    for c in q:
-        sys.stdout.write(c)
-        sys.stdout.flush()
-        time.sleep(s)
-
 # AI dialogue
 Q = '' 
 dia = {
-    'q1': {Q:'Would you like to reclaim Camelot Castle? (yes/no)\n'},
+    'q1': {Q:'Would you like to explore Camelot Castle? (yes/no)\n'},
     'q2': {Q:'Welcome to Camelot Castle! What is your name?\n'},
     'q3': {Q:'What is your gender? (Male/Female/Anything)\n'},
-    'q4': {Q:'Would you like to play solo or as a team (AI)\n'},
+    'q4': {Q:'Would you like to play solo or as a team (AI) (solo/team)\n'},
     'q5': {Q:'Lets create some knights for your round table!\n'},
     'q6': {Q:'Enter the name of your 1st Knight:\n'},
     'q7': {Q:'Enter the name of your 2nd Knight:\n'},
@@ -557,26 +754,43 @@ Beware of the dangers that lurk within the Castle...\n'''},
     'q18': {Q:'     - Copyright 2023 KarlosMoodios -     \n'},
     'q19': {Q:'     - Please type your selection: -     \n'},
     'q20': {Q:'     - To move, use the arrow keys -      \n'},
-    'q21': {Q:'  - Type the commands to exectute them -  \n'},
+    'q21': {Q:'  - Type the commands to execute them -  \n'},
     'q22': {Q:'    - Use \'Look\' to inspect something -   \n'},
     'q23': {Q:'              - Good luck! -            \n'},
     'q24': {Q:'Your chosen knight names are: \n'},
     'q25': {Q:'Good luck on your adventure!\n'},
-    'q26': {Q:'Finised? (Yes/No)\n'},
+    'q26': {Q:'Finished? (Yes/No)\n'},
     'q27': {Q:'Where would you like to move?\n'},
+    'q28': {Q:'Would you like to use your hammer or sword? (hammer/sword)\n'},
+    'q29': {Q:'Would you like to take a torch from the wall?\n'},
+    'q30': {Q:'\n'},
+    
 }
+
+# AI chat speed
+S = ''
+s = {'s0':{S:0.002},'s1':{S:0.01}, 's2':{S:0.02}, 's3':{S:0.04}, 's4':{S:0.05}, 's5':{S:0.1}}
+
+def ai_chat(question, speed):
+    s = speed
+    q = question
+    for c in q:
+        sys.stdout.write(c)
+        sys.stdout.flush()
+        time.sleep(s)
+
 
 def coop_setup():
     round_table = 12
     knights_count = 0
     knight_list = []
-    solo_coop = input('> ')
+    solo_team = input('> ')
     # Choose Knight names
-    if solo_coop.strip().lower() == 'coop':
+    if solo_team.strip().lower() == 'team':
         ai_chat(dia['q5'][Q], s['s0'][S])
         while knights_count < round_table:
             if knights_count == 0:
-                ai_chat(dia['q6'][Q])
+                ai_chat(dia['q6'][Q], s['s1'][S])
                 name = input('> Sir: ')
                 if name == "":
                     ai_chat(dia['q9'][Q], s['s0'][S])
@@ -625,7 +839,7 @@ def coop_setup():
             time.sleep(0.5)
         print('\n')
         #  End of choosing Knight names
-    elif solo_coop.strip().lower() == 'solo':
+    elif solo_team.strip().lower() == 'solo':
         ai_chat(dia['q12'][Q], s['s0'][S])
         time.sleep(4)
     else:
