@@ -123,121 +123,171 @@
 #         if (nest[i][j] == ""):
 #             nest[i][j] = "a"
 # print(nest)
+#############################################################################################
 
-import sys
-import time
+# import sys
+# import time
 
-def ai_chat(question):
-    q = question
-    for c in q:
-        sys.stdout.write(c)
-        sys.stdout.flush()
-        time.sleep(0.02)
+# def ai_chat(question):
+#     q = question
+#     for c in q:
+#         sys.stdout.write(c)
+#         sys.stdout.flush()
+#         time.sleep(0.02)
 
-QUESTION = ''
+# QUESTION = ''
 
-# AI dialogue
-ai_dialogue = {
-    'q1': {
-    QUESTION:'Would you like to play: Knights of the round table? (yes/no)\n',
-    },
-    'q2': {
-    QUESTION:'Welcome to Camelot Castle! Whats is your name?\n',
-    },
-    'q3': {
-    QUESTION:'Lets create some knights for your round table!\n',
-    },
-    'q4': {
-    QUESTION:'Enter the name of your 1st Knight:\n',
-    },
-    'q5': {
-    QUESTION:'Enter the name of your 2nd Knight:\n',
-    },
-    'q6': {
-    QUESTION:'Enter the name of your 3rd Knight:\n',
-    },
-    'q7': {
-    QUESTION:'Please enter a valid name.\n',
-    },
-    'q8': {
-    QUESTION:'Please choose a valid option.\n',
-    },
-    'q9': {
-    QUESTION:'\n',
-    },
-    'q10': {
-    QUESTION:'\n',
-    }, 
-}
+# # AI dialogue
+# ai_dialogue = {
+#     'q1': {
+#     QUESTION:'Would you like to play: Knights of the round table? (yes/no)\n',
+#     },
+#     'q2': {
+#     QUESTION:'Welcome to Camelot Castle! Whats is your name?\n',
+#     },
+#     'q3': {
+#     QUESTION:'Lets create some knights for your round table!\n',
+#     },
+#     'q4': {
+#     QUESTION:'Enter the name of your 1st Knight:\n',
+#     },
+#     'q5': {
+#     QUESTION:'Enter the name of your 2nd Knight:\n',
+#     },
+#     'q6': {
+#     QUESTION:'Enter the name of your 3rd Knight:\n',
+#     },
+#     'q7': {
+#     QUESTION:'Please enter a valid name.\n',
+#     },
+#     'q8': {
+#     QUESTION:'Please choose a valid option.\n',
+#     },
+#     'q9': {
+#     QUESTION:'\n',
+#     },
+#     'q10': {
+#     QUESTION:'\n',
+#     }, 
+# }
  
-# team = knight_list[0:11]
-# ai_chat(team)
+# # team = knight_list[0:11]
+# # ai_chat(team)
 
-ai_chat(ai_dialogue['q1'][QUESTION])
-ans = input('>')
-if ans.strip().lower() == 'yes':
-    round_table = 12
-    knights_count = 0
-    knight_list = []
+# ai_chat(ai_dialogue['q1'][QUESTION])
+# ans = input('>')
+# if ans.strip().lower() == 'yes':
+#     round_table = 12
+#     knights_count = 0
+#     knight_list = []
 
-    ai_chat(ai_dialogue['q2'][QUESTION])
-    playerName = input('>')
-    playerGender = input('Enter your gender: ')
-    if playerGender.strip().lower() == 'male':
-        playerGender = 'King'
-    elif playerGender.strip().lower() == 'female' :
-        playerGender = 'Queen'
-    else:
-        playerGender = playerGender
-    greet_msg = 'Greetings ' + playerGender + ' ' + playerName + '!\n' 
-    ai_chat(greet_msg)
-    time.sleep(1)
-    ai_chat(ai_dialogue['q3'][QUESTION])
-    while knights_count < round_table:
-        if knights_count == 0:
-            ai_chat(ai_dialogue['q4'][QUESTION])
-            name = input('> Sir: ')
-            if name == "":
-                ai_chat(ai_dialogue['q7'][QUESTION])
-                knights_count -= 1
-            else:
-                knight_list.append('Sir ' + name)
+#     ai_chat(ai_dialogue['q2'][QUESTION])
+#     playerName = input('>')
+#     playerGender = input('Enter your gender: ')
+#     if playerGender.strip().lower() == 'male':
+#         playerGender = 'King'
+#     elif playerGender.strip().lower() == 'female' :
+#         playerGender = 'Queen'
+#     else:
+#         playerGender = playerGender
+#     greet_msg = 'Greetings ' + playerGender + ' ' + playerName + '!\n' 
+#     ai_chat(greet_msg)
+#     time.sleep(1)
+#     ai_chat(ai_dialogue['q3'][QUESTION])
+#     while knights_count < round_table:
+#         if knights_count == 0:
+#             ai_chat(ai_dialogue['q4'][QUESTION])
+#             name = input('> Sir: ')
+#             if name == "":
+#                 ai_chat(ai_dialogue['q7'][QUESTION])
+#                 knights_count -= 1
+#             else:
+#                 knight_list.append('Sir ' + name)
 
-        elif knights_count == 1:
-            ai_chat(ai_dialogue['q5'][QUESTION])
-            name = input('> Sir: ')
-            if name == "":
-                ai_chat(ai_dialogue['q7'][QUESTION])
-                knights_count -= 1
-            else:
-                knight_list.append('Sir ' + name)
+#         elif knights_count == 1:
+#             ai_chat(ai_dialogue['q5'][QUESTION])
+#             name = input('> Sir: ')
+#             if name == "":
+#                 ai_chat(ai_dialogue['q7'][QUESTION])
+#                 knights_count -= 1
+#             else:
+#                 knight_list.append('Sir ' + name)
 
-        elif knights_count == 2:
-            ai_chat(ai_dialogue['q6'][QUESTION])
-            name = input('> Sir: ')
-            if name == "":
-                ai_chat(ai_dialogue['q7'][QUESTION])
-                knights_count -= 1
-            else:
-                knight_list.append('Sir ' + name)
+#         elif knights_count == 2:
+#             ai_chat(ai_dialogue['q6'][QUESTION])
+#             name = input('> Sir: ')
+#             if name == "":
+#                 ai_chat(ai_dialogue['q7'][QUESTION])
+#                 knights_count -= 1
+#             else:
+#                 knight_list.append('Sir ' + name)
 
-        elif knights_count < round_table:
-            n = str(knights_count + 1)
-            ai_chat('Enter the name of your '+ n + 'th Knight: \n')
-            name = input('> Sir: ')
-            if name == "":
-                ai_chat(ai_dialogue['q7'][QUESTION])
-                knights_count -= 1
-            else:
-                knight_list.append('Sir ' + name)   
-        knights_count += 1
-        n = str(knights_count)
-        if knights_count == 1:
-            ai_chat("You have " + n + " Knight at the round table.\n")
-        else:
-            ai_chat("You have " + n + " Knights at the round table.\n")
-    print(knight_list)
-else:
-    ai_chat(ai_dialogue['q8'][QUESTION])
+#         elif knights_count < round_table:
+#             n = str(knights_count + 1)
+#             ai_chat('Enter the name of your '+ n + 'th Knight: \n')
+#             name = input('> Sir: ')
+#             if name == "":
+#                 ai_chat(ai_dialogue['q7'][QUESTION])
+#                 knights_count -= 1
+#             else:
+#                 knight_list.append('Sir ' + name)   
+#         knights_count += 1
+#         n = str(knights_count)
+#         if knights_count == 1:
+#             ai_chat("You have " + n + " Knight at the round table.\n")
+#         else:
+#             ai_chat("You have " + n + " Knights at the round table.\n")
+#     print(knight_list)
+# else:
+#     ai_chat(ai_dialogue['q8'][QUESTION])
 
     #  End of choosing Knight names
+
+    ###########################################################################################################
+
+# import threading
+# import time
+
+# def run_simultaneously():
+#     for i in range (11, 21):
+#         time.sleep(.5)
+#         print('£ '+str(i))
+
+# # create thread object
+# t = threading.Thread(target = run_simultaneously)
+# # start thread
+# t.start()
+
+# for i in range (1, 11):
+#     time.sleep(.5)
+#     print('\n# '+str(i))
+
+
+# print('end')
+
+
+import threading
+import time
+import os
+
+entered_input = False
+
+def check_for_timeout():
+    time.sleep(5)
+    if entered_input == True:
+        os._exit(0)
+    else:
+        print('timeout, try again')
+        os._exit(0)
+
+
+print('enter a number to calculate square: ')
+
+# create thread object
+t = threading.Thread(target = check_for_timeout)
+# start thread
+t.start()
+
+number = int(input())
+entered_input = True
+print('the square of your number is: ' + str(number * number))
